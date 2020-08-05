@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/recipes"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{recipe.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="padding: 0px;">
+    <ion-row>
+      <ion-col>
+        <ion-img [src]="recipe.url"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-align-items-center">
+        <h1 style="text-align: center;">{{recipe.title}}</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-list *ngFor="let item of recipe.ingredients">
+          <ion-item>
+            {{item}}
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
