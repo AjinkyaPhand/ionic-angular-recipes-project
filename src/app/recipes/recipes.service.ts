@@ -9,7 +9,7 @@ export class RecipesService {
     {
       id: "1",
       title: "Noodles",
-      url: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      url: "https://images.unsplash.com/photo-1559314809-0d155014e29e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
       ingredients: ["noodels", "salt", "chilli", "sauce"]
     },
     {
@@ -31,6 +31,12 @@ export class RecipesService {
         return item.id === id
       })
     }
+  }
+
+  deleteRecipe(recipeID: string) {
+    this.recipes = this.recipes.filter((recipe) => {
+      return recipe.id !== recipeID
+    })
   }
 
 }
