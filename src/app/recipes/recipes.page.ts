@@ -15,7 +15,28 @@ export class RecipesPage implements OnInit {
   recipes: Recipe[];
 
   ngOnInit() {
+    
+  }
+
+  ionViewWillEnter(){
     this.recipes = this.serviceObject.GetAllRecipes()
+    console.log("ionViewWillEnter")
+  }
+
+  ionViewDidEnter(){
+    console.log("ionViewWDidEnter")
+  }
+
+  ionViewWillLeave(){
+    console.log("ionViewWillLeave")
+  }
+
+  ionViewDidLeave(){
+    console.log("ionViewDidLeave");
+  }
+
+  ngOnDestroy(){
+    console.log("Destroyed");
   }
 
 }
