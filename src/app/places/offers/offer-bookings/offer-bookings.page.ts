@@ -21,7 +21,9 @@ export class OfferBookingsPage implements OnInit {
           this.navController.navigateBack("/places/tabs/offers")
           return
         }
-        this.place = this.serviceObject.findPlaceById(params.get("placeId"))
+        this.serviceObject.findPlaceById(params.get("placeId")).subscribe(place => {
+          this.place = place;
+        })
       }
     )
   }

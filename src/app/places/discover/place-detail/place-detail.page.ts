@@ -25,7 +25,9 @@ export class PlaceDetailPage implements OnInit {
           this.navController.navigateBack("/places/tabs/discover")
           return
         }
-        this.place = this.serviceObject.findPlaceById(params.get("placeId"))
+        this.serviceObject.findPlaceById(params.get("placeId")).subscribe(place => {
+          this.place = place;
+        })
       }
     )
   }
@@ -60,7 +62,7 @@ export class PlaceDetailPage implements OnInit {
     this.modelController.create({
       component: CreateBookingComponent,
       componentProps: {
-        bookedPlace: this.place
+        bookedPlace: this.place, selectedMode: mode
       }
     }).then((myModal) => {
       myModal.present();
@@ -68,7 +70,7 @@ export class PlaceDetailPage implements OnInit {
     }).then(resutData => {
       console.log(resutData.data, resutData.role)
       if (resutData.role == "confirm") {
-        console.log("Boooked");
+        console.log(resutData.data);
       }
     })
   }

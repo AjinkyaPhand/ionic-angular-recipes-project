@@ -1,5 +1,6 @@
+import { NgForm } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Place } from 'src/app/places/place.model';
 
 @Component({
@@ -9,21 +10,47 @@ import { Place } from 'src/app/places/place.model';
 })
 export class CreateBookingComponent implements OnInit {
 
-  @Input() bookedPlace: Place
+  @Input() bookedPlace: Place;
+  @Input() selectedMode: 'selected' | 'random';
+  startDate: string;
+  endDate: string;
+  @ViewChild("f", { static: true }) form: NgForm;
+  constructor(private modalController: ModalController) { }
 
-  constructor(private modalController:ModalController) { }
-
-  ngOnInit() { }
-
-  onCancel(){
-    this.modalController.dismiss(null,'cancel')
+  ngOnInit() {
+    const avaliableFrom = new Date(this.bookedPlace.fromDate)
+    const avaliableTo = new Date(this.bookedPlace.toDate)
+    if (this.selectedMode === "random") {
+      this.startDate = new Date(avaliableFrom.getTime() + Math.random() * (avaliableTo.getTime() - 7 * 24 * 60 * 60 * 1000 - avaliableFrom.getTime())).toISOString();
+      this.endDate = new Date(new Date(this.startDate).getTime() + Math.random() * (new Date(this.startDate).getTime() + 6 * 24 * 60 * 60 * 1000 - new Date(this.startDate).getTime())).toISOString();
+    }
   }
 
-  onBookPlace(){
+  onCancel() {
+    this.modalController.dismiss(null, 'cancel')
+  }
+
+  onBookPlace() {
+    if(!this.form.valid || !this.datesValid()){
+      return;
+    }
     this.modalController.dismiss({
-      message:'This is a message'
+      bookingData:{
+        firstName:this.form.value['firstname'],
+        lastName:this.form.value['lastname'],
+        guestNumber:this.form.value['guestnumber'],
+        startDate:this.form.value['dateFrom'],
+        endDate:this.form.value['dateTo']
+      }
     },
-    'confirm')
+      'confirm')
   }
+
+  datesValid() {
+    const startDate = this.form.value['dateFrom'];
+    const endDate = this.form.value['dateTo'];
+    return endDate > startDate;
+  }
+
 
 }

@@ -14,12 +14,13 @@ export class DiscoverPage implements OnInit {
   constructor(private serviceObject: PlacesService) { }
 
   ngOnInit() {
-    this.loadedPlaces = this.serviceObject.places
-    this.listedLoadedPlaces = this.loadedPlaces.slice(1)
+    this.serviceObject.places.subscribe(places=>{
+      this.loadedPlaces = places;
+      this.listedLoadedPlaces = this.loadedPlaces.slice(1)
+    })
   }
 
   ionViewWillEnter() {
-
   }
 
   segmentChanged(event:CustomEvent){

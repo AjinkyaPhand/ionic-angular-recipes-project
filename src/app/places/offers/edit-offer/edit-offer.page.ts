@@ -1,3 +1,4 @@
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlacesService } from '../../places.service';
@@ -10,7 +11,8 @@ import { Place } from '../../place.model';
   styleUrls: ['./edit-offer.page.scss'],
 })
 export class EditOfferPage implements OnInit {
-  place: Place
+  place: Place;
+  myForm: FormGroup;
   constructor(private route: ActivatedRoute, private navController: NavController,
     private serviceObject: PlacesService) { }
 
@@ -21,9 +23,22 @@ export class EditOfferPage implements OnInit {
           this.navController.navigateBack("/places/tabs/offers")
           return
         }
-        this.place = this.serviceObject.findPlaceById(params.get("placeId"))
+        this.serviceObject.findPlaceById(params.get("placeId")).subscribe(place => {
+          this.place = place;
+          this.myForm = new FormGroup({
+            title: new FormControl(this.place.title, Validators.required),
+            description: new FormControl(this.place.description, Validators.required)
+          })
+        })
       }
     )
+  }
+
+  onEditOffer() {
+    if (this.myForm.invalid) {
+      return;
+    }
+    console.log(this.myForm.value);
   }
 
 }
