@@ -14,12 +14,16 @@ export class BookingsPage implements OnInit {
   constructor(private serviceObject: BookingService) { }
 
   ngOnInit() {
-    this.loadedBookings = this.serviceObject.bookings
+    this.serviceObject.bookings.subscribe(booking => {
+      this.loadedBookings = booking;
+    })
   }
 
-  onCancelBooking(offerId:string,slidingEle:IonItemSliding){
+  onCancelBooking(bookingId: string, slidingEle: IonItemSliding) {
+   this.serviceObject.cancelBooking(bookingId).subscribe(()=>{
+     
+   })
     slidingEle.close();
-    
   }
 
 }
