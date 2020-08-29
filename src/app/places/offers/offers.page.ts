@@ -10,19 +10,25 @@ import { Router } from '@angular/router';
   styleUrls: ['./offers.page.scss'],
 })
 export class OffersPage implements OnInit {
-  loadedPlaces:Place[]
-  constructor(private serviceObject:PlacesService,private router:Router) { }
+  loadedPlaces: Place[]
+  constructor(private serviceObject: PlacesService, private router: Router) { }
 
   ngOnInit() {
-    this.serviceObject.places.subscribe(places=>{
-      this.loadedPlaces = places;
-    });
+    // this.serviceObject.places.subscribe(places=>{
+    //   this.loadedPlaces = places;
+    // });
+    this.serviceObject.fetchPlaces().subscribe(
+      places => {
+        this.loadedPlaces = places;
+      }
+    )
   }
 
-  onEdit(offerId:string,slidingItem:IonItemSliding){
+
+  onEdit(offerId: string, slidingItem: IonItemSliding) {
     slidingItem.close();
-    this.router.navigate(['/','places','tabs','offers','edit',offerId])
-    console.log(offerId)
+    this.router.navigate(['/', 'places', 'tabs', 'offers', 'edit', offerId])
+    // console.log(offerId)
   }
 
 }
