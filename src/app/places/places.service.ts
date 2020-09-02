@@ -74,17 +74,26 @@ export class PlacesService {
             }
           }
           return places;
-        }), 
-        tap(places=>{
+        }),
+        tap(places => {
           this._places.next(places)
         })
       )
   }
 
   findPlaceById(placeId: string) {
-    return this.places.pipe(take(1), map((places) => {
-      return { ...places.find(place => place.id === placeId) }
-    }));
+    return this.http.get<PlaceData>(`https://ionic-book-my-place.firebaseio.com/offered-places/${placeId}.json`)
+    .pipe(
+      map(placeData=>{
+        return new Place(placeId,placeData.title,placeData.description,placeData.imageURL,
+          placeData.price,new Date(placeData.fromDate),new Date(placeData.toDate),placeData.userId)
+      })
+    )
+
+
+    // return this.places.pipe(take(1), map((places) => {
+    //   return { ...places.find(place => place.id === placeId) }
+    // }));
   }
 
   addPlace(title: string, description: string, price: number, fromDate: Date, toDate: Date) {
@@ -115,16 +124,35 @@ export class PlacesService {
   }
 
   editOffer(placeId: string, title: string, description: string) {
-    return this.places.pipe(take(1), delay(1000), tap(places => {
+    let updatedPlace: Place[];
+    return this.places.pipe(take(1), switchMap(places => {
       const updatedPlaceIndex = places.findIndex(ele => {
         return ele.id === placeId
       })
-      const updatedPlace = [...places];
+      updatedPlace = [...places];
       const old = updatedPlace[updatedPlaceIndex];
-      updatedPlace[updatedPlaceIndex] = new Place(old.id, title, description, old.imageURL, old.price, old.fromDate, old.toDate, old.userId)
+      updatedPlace[updatedPlaceIndex] = new Place
+        (old.id, title, description, old.imageURL, old.price, old.fromDate, old.toDate, old.userId)
+      return this.http.put(`https://ionic-book-my-place.firebaseio.com/offered-places/${placeId}.json`,
+        {
+          ...updatedPlace[updatedPlaceIndex], id: null
+        });
+    }), tap(() => {
       this._places.next(updatedPlace);
-    }));
+    })
+    );
   }
 
-
+  //   return this.places.pipe(take(1), tap(places => {
+  //     const updatedPlaceIndex = places.findIndex(ele => {
+  //       return ele.id === placeId
+  //     })
+  //     const updatedPlace = [...places];
+  //     const old = updatedPlace[updatedPlaceIndex];
+  //     updatedPlace[updatedPlaceIndex] = new Place(old.id, title, description, old.imageURL, old.price, old.fromDate, old.toDate, old.userId)
+  //     this._places.next(updatedPlace);
+  //   }));
+  // }
 }
+
+

@@ -13,6 +13,7 @@ import { Place } from '../../place.model';
 export class EditOfferPage implements OnInit {
   place: Place;
   myForm: FormGroup;
+  isLoading=false;
   constructor(private route: ActivatedRoute, private navController: NavController,
     private serviceObject: PlacesService, private router: Router, private loadingController: LoadingController) { }
 
@@ -23,6 +24,7 @@ export class EditOfferPage implements OnInit {
           this.navController.navigateBack("/places/tabs/offers")
           return
         }
+        this.isLoading =true;
         this.serviceObject.findPlaceById(params.get("placeId")).subscribe(place => {
           this.place = place;
           // console.log(this.place)
@@ -31,6 +33,7 @@ export class EditOfferPage implements OnInit {
             description: new FormControl(this.place.description, Validators.required)
           })
         })
+        this.isLoading =false
       }
     )
   }

@@ -19,6 +19,13 @@ export class BookingsPage implements OnInit {
     })
   }
 
+  ionViewWillEnter(){
+    this.serviceObject.fetchBookings().subscribe(()=>{
+      
+    });
+
+  }
+
   onCancelBooking(bookingId: string, slidingEle: IonItemSliding) {
    this.serviceObject.cancelBooking(bookingId).subscribe(()=>{
      
