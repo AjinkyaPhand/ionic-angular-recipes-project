@@ -18,7 +18,7 @@ export class AuthPage implements OnInit {
   }
 
   onLogin() {
-    this.serviceObject.login()
+    // this.serviceObject.login()
     this.isLoading = true;
     this.loadingController.create({
       keyboardClose: true,
@@ -40,11 +40,10 @@ export class AuthPage implements OnInit {
     }
     const email = myForm.value.email;
     const password = myForm.value.password;
-    if(this.isLogin){
+    if (this.isLogin) {
 
     }
-    else{
-      
+    else {
     }
   }
 

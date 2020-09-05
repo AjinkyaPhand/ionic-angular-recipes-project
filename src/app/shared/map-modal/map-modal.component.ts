@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { resolve } from 'dns';
+// import { resolve } from 'dns';
 import { rejects } from 'assert';
 import { environment } from '../../../environments/environment'
 @Component({
